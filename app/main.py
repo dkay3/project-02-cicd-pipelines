@@ -248,7 +248,7 @@ def info():
         "commit_sha": os.getenv("COMMIT_SHA", "local"),
         "service": os.getenv("SERVICE_NAME", "devops-p02-app"),
         "status": "healthy",
-        "deployed_at": datetime.datetime.utcnow().isoformat() + "Z"
+        "deployed_at": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
     })
 
 

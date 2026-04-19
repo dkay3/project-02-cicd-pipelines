@@ -14,12 +14,11 @@ def test_home_returns_200(client):
     assert response.status_code == 200
 
 
-def test_home_returns_json(client):
+def test_home_returns_html(client):
     response = client.get("/")
-    data = response.get_json()
-    assert data is not None
-    assert "message" in data
-    assert data["status"] == "healthy"
+    assert response.status_code == 200
+    assert b"Great job" in response.data
+    assert b"deployed" in response.data
 
 
 def test_health_endpoint(client):
@@ -32,3 +31,13 @@ def test_ready_endpoint(client):
     response = client.get("/ready")
     assert response.status_code == 200
     assert response.get_json()["status"] == "ready"
+
+
+def test_api_info_endpoint(client):
+    response = client.get("/api/info")
+    assert response.status_code == 200
+    data = response.get_json()
+    assert data is not None
+    assert "version" in data
+    assert "status" in data
+    assert data["status"] == "healthy"
