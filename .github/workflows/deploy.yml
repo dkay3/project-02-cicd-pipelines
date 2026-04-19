@@ -90,7 +90,23 @@ jobs:
           curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh \
             | sh -s -- -b /usr/local/bin v0.63.0
 
-      - name: Scan image with Trivy
+      - name: Install Trivy
+        run: |
+          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh \
+            | sh -s -- -b /usr/local/bin v0.63.0
+          trivy --version
+
+      - name: Scan image with Trivy (report only)
+        run: |
+          trivy image \
+            --exit-code 0 \
+            --ignore-unfixed \
+            --vuln-type os,library \
+            --severity CRITICAL,HIGH,MEDIUM \
+            --format table \
+            ${{ steps.build.outputs.image }}
+
+      - name: Scan image with Trivy (fail on CRITICAL)
         run: |
           trivy image \
             --exit-code 1 \
