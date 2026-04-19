@@ -110,7 +110,10 @@ resource "aws_ecs_task_definition" "app" {
 
     environment = [
       { name = "ENVIRONMENT", value = var.environment },
-      { name = "APP_VERSION", value = var.app_image_tag }
+      { name = "APP_VERSION", value = var.app_image_tag },
+      { name = "COMMIT_SHA",  value = var.app_image_tag },
+      { name = "SERVICE_NAME", value = "${var.project_name}-app" },
+      { name = "AUTHOR_NAME",  value = "Dyke C Kangoma" }
     ]
 
     logConfiguration = {
